@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -9,31 +8,13 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  DateTime firstDay = DateTime.now().subtract(const Duration(minutes: 30));
+  DateTime firstDay = DateTime.now();
 
   void onHeartPressed() {
-    showCupertinoDialog(
-        context: context,
-        barrierDismissible: true,
-        builder: (context) {
-          return Align(
-            alignment: Alignment.bottomCenter,
-            child: Container(
-              color: Colors.white.withOpacity(0.8),
-              height: 300,
-              child: CupertinoDatePicker(
-                mode: CupertinoDatePickerMode.date,
-                maximumDate: DateTime.now()
-                    .add(const Duration(minutes: 1)), //오늘까지만 선택가능 = 미래는 선택못함.
-                onDateTimeChanged: (date) {
-                  setState(() {
-                    firstDay = date;
-                  });
-                },
-              ),
-            ),
-          );
-        });
+    setState(() {
+      firstDay = firstDay.subtract(const Duration(days: 1)); //날짜를 하루 줄이기
+      // DateTime 타입의 firstDay는   firstDay-- 로 못한다.
+    });
   }
 
   @override
@@ -56,16 +37,13 @@ class _HomeState extends State<Home> {
     );
   }
 
-  Widget lowerContainer(BuildContext context) {
-    return Expanded(
-      // 혹시 overflow발생하지 않도록
-      child: Container(
-          // color: Colors.blue,
-          child: Image.asset(
-        'images/middle_image.png',
-        height: MediaQuery.of(context).size.height / 2,
-      )),
-    );
+  Container lowerContainer(BuildContext context) {
+    return Container(
+        // color: Colors.blue,
+        child: Image.asset(
+      'images/middle_image.png',
+      height: MediaQuery.of(context).size.height / 2,
+    ));
   }
 
   Container upperContainer(TextTheme textTheme) {
